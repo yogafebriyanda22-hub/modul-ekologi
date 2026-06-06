@@ -851,27 +851,7 @@
         
         const totalSkor = (correctAnswers / totalSoal) * 100;
         // Fungsi mengirim data ke Google Sheets
-  const urlJembatan = "https://script.google.com/macros/s/AKfycbzQJViCsDScnOAgvwgJe9HHX08pybmxI9E-gF06_ciIPjYgYUmwewlj5-jYaj0yq_lNbQ/exec";
-  const komentarSiswa = document.getElementById('textRefleksi') ? document.getElementById('textRefleksi').value : "Tidak menulis refleksi";      
-  const dataKuis = {
-    nama: nama,
-    kelas: kelas,
-    nilai: totalSkor,
-    emoji: emojiTerpilihGlobal,
-    komentar_refleksi: komentarSiswa,
-  };
-
-  fetch(urlJembatan, {
-    method: "POST",
-    body: JSON.stringify(dataKuis)
-  })
-  .then(response => response.json())
-  .then(result => {
-    if(result.status === "success") {
-      alert("Nilai evaluasi kamu berhasil disimpan ke Google Sheets!");
-    }
-  })
-  .catch(error => {
+  
     console.error("Gagal mengirim data:", error);
   });
         // Tampilkan hasil di panel bawah
@@ -889,10 +869,7 @@
         }
         document.getElementById('motivationalText').innerText = motivasi;
         
-        const panelHasil = document.getElementById('quizResult');
-        panelHasil.style.display = 'block';
-        panelHasil.scrollIntoView({ behavior: 'smooth' });
-        // Membuat kotak cerita refleksi otomatis muncul di bawah panel hasil kuis
+        // Membuat kotak cerita refleksi otomatis muncul di bawah panel hasil kuis beserta tombol kirim data resmi
     if (!document.getElementById('textRefleksi')) {
         const kotakKomentar = document.createElement('div');
         kotakKomentar.innerHTML = `
@@ -901,9 +878,53 @@
                     Tuliskan kalimat refleksimu atau kendala belajar di sini:
                 </label>
                 <textarea id="textRefleksi" rows="4" style="width: 85%; max-width: 500px; padding: 12px; border-radius: 8px; border: 2px solid #bce2ca; outline: none; font-size: 14px;" placeholder="Ceritakan apa yang kamu rasakan setelah petualangan belajar ini..."></textarea>
+                <br>
+                <button id="btnKirimData" style="margin-top: 15px; background-color: #28a745; color: white; border: none; padding: 10px 25px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+                     Kirim Hasil Nilai & Komentar Refleksi
+                </button>
             </div>
         `;
         panelHasil.insertBefore(kotakKomentar, panelHasil.lastChild);
+
+        // DAFTARKAN AKSI KLIK PADA TOMBOL BARU INI UNTUK MENGIRIM DATA LENGKAP
+        document.getElementById('btnKirimData').addEventListener('click', function() {
+            const namaSiswa = document.getElementById('nameInput') ? document.getElementById('nameInput').value : "Anonim";
+            const kelasSiswa = document.getElementById('classInput') ? document.getElementById('classInput').value : "-";
+            const komentarSiswa = document.getElementById('textRefleksi').value || "Tidak menulis refleksi";
+            
+            const dataKuis = {
+                nama: namaSiswa,
+                kelas: kelasSiswa,
+                nilai: totalSkor,
+                emoji: emojiTerpilihGlobal,
+                komentar_refleksi: komentarSiswa
+            };
+
+            const urlJembatan = "https://script.google.com/macros/s/AKfycbyQ_aIWZgnVj7fkLZ1yHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekwQ/exec";
+
+            document.getElementById('btnKirimData').innerText = "Sedang Mengirim...";
+            document.getElementById('btnKirimData').disabled = true;
+
+            fetch(urlJembatan, {
+                method: "POST",
+                body: JSON.stringify(dataKuis)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.status === "success") {
+                    alert("Terima kasih! Data nilai, emoji, dan kalimat refleksimu BERHASIL disimpan ke Google Sheets Guru!");
+                    document.getElementById('btnKirimData').innerText = "✅ Data Berhasil Terkirim!";
+                    document.getElementById('btnKirimData').style.backgroundColor = "#6c757d";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Gagal mengirim data, silakan klik kirim ulang.");
+                document.getElementById('btnKirimData').innerText = "Kirim Hasil Nilai & Komentar Refleksi";
+                document.getElementById('btnKirimData').disabled = false;
+            });
+        });
+    }
     }
         console.log(`Mengirim otomatis data nilai siswa ke Spreadsheet: Nama: ${nama}, Kelas: ${kelas}, Skor: ${totalSkor}`);
     });
