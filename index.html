@@ -850,7 +850,27 @@
         }
         
         const totalSkor = (correctAnswers / totalSoal) * 100;
-        
+        // Fungsi mengirim data ke Google Sheets
+  const urlJembatan = "https://script.google.com/macros/s/AKfycbwQ_aIWZgnVj7fkLZlyHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekWQ/exec"; 
+  const dataKuis = {
+    nama: nama,
+    kelas: kelas,
+    nilai: totalSkor
+  };
+
+  fetch(urlJembatan, {
+    method: "POST",
+    body: JSON.stringify(dataKuis)
+  })
+  .then(response => response.json())
+  .then(result => {
+    if(result.status === "success") {
+      alert("Nilai evaluasi kamu berhasil disimpan ke Google Sheets!");
+    }
+  })
+  .catch(error => {
+    console.error("Gagal mengirim data:", error);
+  });
         // Tampilkan hasil di panel bawah
         document.getElementById('outName').innerText = nama;
         document.getElementById('outClass').innerText = kelas;
