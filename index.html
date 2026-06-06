@@ -3,189 +3,462 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modul Interaktif Ekologi dan Keanekaragaman Hayati</title>
-    <!-- Kamu bisa menyisipkan link CSS atau Font eksternal di sini jika ada -->
+    <title>Petualangan Alam: Ekologi & Keanekaragaman Hayati</title>
     <style>
-        /* SINKRONISASI STYLE DASAR MODUL KREASIMU */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f9f4;
+            background-color: #e8f5e9;
+            color: #2e7d32;
             margin: 0;
             padding: 0;
         }
-        /* Tambahkan style kustom navigasi, halaman topik, dll. sesuai kebutuhan modulmu di sini */
+        header {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border-top: 5px solid #4caf50;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #e68a00;
+        }
+        .btn-quizizz {
+            background-color: #673ab7;
+        }
+        .btn-quizizz:hover {
+            background-color: #512da8;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #a5d6a7;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .question {
+            margin-bottom: 20px;
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .question p {
+            font-weight: bold;
+            margin-top: 0;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        button[type="button"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button[type="button"]:hover {
+            background-color: #388e3c;
+        }
+        #hasil-evaluasi {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff3e0;
+            border-radius: 10px;
+            border: 2px dashed #ff9800;
+            text-align: center;
+        }
+        .emoji-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .emoji-btn {
+            font-size: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .emoji-btn:hover {
+            transform: scale(1.2);
+        }
+        .emoji-count {
+            text-align: center;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #a5d6a7;
+            border-radius: 8px;
+            box-sizing: border-box;
+            height: 100px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- BAGIAN KONTEN / HALAMAN MODUL UTAMA        -->
-    <!-- ========================================== -->
-    <!-- (Silakan lengkapi bagian struktur HTML halaman materi Topik 1-3, Eksplorasi Anda di sini) -->
+<header>
+    <h1>Modul Pembelajaran IPA Interaktif</h1>
+    <p>Mari Menjelajah Alam Bersama!</p>
+</header>
 
-
-    <!-- ========================================== -->
-    <!-- BAGIAN HALAMAN MENU MENU 6: EVALUASI KUIS  -->
-    <!-- ========================================== -->
-    <div id="halamanEvaluasi" style="padding: 20px; max-width: 800px; margin: auto;">
-        <h2>Evaluasi Akhir Belajar</h2>
-        <div style="margin-bottom: 15px;">
-            <label>Nama Siswa:</label><br>
-            <input type="text" id="nameInput" placeholder="Masukkan nama lengkapmu..." style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
-        </div>
-        <div style="margin-bottom: 20px;">
-            <label>Kelas:</label><br>
-            <input type="text" id="classInput" placeholder="Contoh: 7A..." style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
-        </div>
-
-        <!-- Contoh Struktur Soal Kuis (Sesuaikan dengan soal asli kreasimu) -->
-        <div id="areaSoalKuis">
-            <!-- Soal-soal kuis pilihan ganda diletakkan di area ini -->
-        </div>
-
-        <button onclick="cekNilaiKuis()" style="background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
-            🚀 Kirim & Cek Nilai Akhir
-        </button>
+<div class="container">
+    
+    <div class="card">
+        <h2>Profil Pengembang Modul</h2>
+        <p><strong>Nama:</strong> Yoga Febriyanda, S.Pd.</p>
+        <p><strong>Asal Sekolah:</strong> SMPN 1 NOYAN</p>
+        <hr>
+        <h2>Identitas Materi</h2>
+        <p><strong>Topik:</strong> Ekologi dan Keanekaragaman Hayati</p>
+        <p><strong>Kelas / Semester:</strong> VII (Tujuh) / 2</p>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- BAGIAN PANEL HASIL & AREA REFLEKSI (MUNCUL OTOMATIS)    -->
-    <!-- ======================================================= -->
-    <div id="panelHasil" style="display: none; padding: 20px; max-width: 800px; margin: 20px auto; background-color: #e8f5e9; border: 2px solid #a5d6a7; border-radius: 10px; text-align: center;">
-        <h3 style="color: #2e7d32;">🎉 Hasil Ujian Berhasil Diperoleh 🎉</h3>
-        <p>Nama: <span id="outName" style="font-weight: bold;"></span> | Kelas: <span id="outClass" style="font-weight: bold;"></span></p>
+    <div class="card">
+        <h2>Tujuan Pembelajaran</h2>
+        <p>Setelah mengikuti pembelajaran yang seru ini, kalian diharapkan mampu:</p>
+        <ul style="list-style-type: disc; margin-left: 20px;">
+            <li>Menjelaskan pengertian ekologi, manfaat beserta fungsinya.</li>
+            <li>Mengidentifikasi tingkat keanekaragaman hayati (gen, jenis, dan ekosistem).</li>
+            <li>Mengidentifikasi komponen biotik dan abiotik dalam ekosistem.</li>
+            <li>Menganalisis upaya pelestarian keanekaragaman hayati.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Topik 1: Mengenal Ekologi Lebih Dekat</h2>
+        <p>Pada video ini, kita akan membahas apa itu ekologi, manfaatnya untuk kehidupan kita, serta fungsinya di alam semesta.</p>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9dAcEBXAFoo" title="Topik 1 Video" allowfullscreen></iframe>
+        </div>
+        <a href="https://docs.google.com/document/d/1SZeZmTTGfGJGvtLu0JPLXbHieY7nbFiY/edit" target="_blank" class="btn">📥 Unduh Modul Topik 1</a>
+    </div>
+
+    <div class="card">
+        <h2>Topik 2: Keanekaragaman Hayati</h2>
+        <p>Tahukah kalian bahwa makhluk hidup itu sangat beragam? Mari pelajari tingkat keanekaragaman gen, spesies, dan ekosistem!</p>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/hM4VdZVXKgQ" title="Topik 2 Video" allowfullscreen></iframe>
+        </div>
+        <a href="https://docs.google.com/document/d/1TZOfPoC5iKgFhQ3R2txQsa9kvnl0iPhm/edit" target="_blank" class="btn">📥 Unduh Modul Topik 2</a>
+    </div>
+
+    <div class="card">
+        <h2>Topik 3: Komponen Biotik & Abiotik</h2>
+        <p>Ekosistem terdiri dari benda hidup dan tak hidup yang saling bergantung. Yuk, tonton penjelasannya di bawah ini!</p>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/qJr1p55rT5M" title="Topik 3 Video" allowfullscreen></iframe>
+        </div>
+        <a href="https://docs.google.com/document/d/1QnZaAN10XFdUXv_LlkUS6LX89RVlxD63/edit" target="_blank" class="btn">📥 Unduh Modul Topik 3</a>
+    </div>
+
+    <div class="card" style="border-top: 5px solid #2196f3;">
+        <h2>Mari Menelisik Salah Satu Ekosistem di Kalimantan!</h2>
+        <p>Saksikan keindahan Taman Nasional Tanjung Puting, rumah yang nyaman bagi sahabat kita, Orang Utan.</p>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/m0EY-GFn6Rc" title="Tanjung Puting Video" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="card" id="evaluasi">
+        <h2>Uji Pemahaman (Evaluasi)</h2>
+        <p>Isi identitas diri kalian dan jawablah pertanyaan di bawah ini dengan tepat!</p>
         
-        <h1 id="scoreText" style="font-size: 48px; color: #1b5e20; margin: 15px 0;">0 / 100</h1>
-        <p id="motivationalText" style="font-style: italic; color: #555;"></p>
+        <form id="quizForm">
+            <div class="form-group">
+                <label>Nama Lengkap:</label>
+                <input type="text" id="nama" required placeholder="Masukkan nama kalian...">
+            </div>
+            <div class="form-group">
+                <label>Kelas:</label>
+                <input type="text" id="kelas" required placeholder="Contoh: VII A">
+            </div>
 
-        <!-- Kotak Refleksi dan Tombol Kirim akan Dibuat Secara Otomatis di Sini oleh JavaScript -->
+            <hr>
+
+            <div class="question">
+                <p>1. Istilah ekologi berasal dari bahasa Yunani, yaitu oikos dan logos. Arti dari kata oikos adalah...</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A. Ilmu</label>
+                    <label><input type="radio" name="q1" value="B"> B. Interaksi</label>
+                    <label><input type="radio" name="q1" value="C"> C. Lingkungan atau habitat</label>
+                    <label><input type="radio" name="q1" value="D"> D. Makhluk hidup</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Seekor badak atau seorang manusia dalam tingkatan organisasi ekologi disebut sebagai...</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A. Populasi</label>
+                    <label><input type="radio" name="q2" value="B"> B. Individu</label>
+                    <label><input type="radio" name="q2" value="C"> C. Komunitas</label>
+                    <label><input type="radio" name="q2" value="D"> D. Ekosistem</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. Sekelompok individu sejenis yang mendiami suatu tempat tertentu dalam waktu yang tertentu, disebut...</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A"> A. Komunitas</label>
+                    <label><input type="radio" name="q3" value="B"> B. Biosfer</label>
+                    <label><input type="radio" name="q3" value="C"> C. Populasi</label>
+                    <label><input type="radio" name="q3" value="D"> D. Lanskap</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Keanekaragaman hayati yang menunjukkan variasi antar individu dalam satu spesies merupakan tingkat...</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A"> A. Gen</label>
+                    <label><input type="radio" name="q4" value="B"> B. Spesies</label>
+                    <label><input type="radio" name="q4" value="C"> C. Ekosistem</label>
+                    <label><input type="radio" name="q4" value="D"> D. Populasi</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. Ekosistem yang dicirikan oleh lingkungan yang dipenuhi lumut, bersuhu rendah, adalah...</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A"> A. Hutan hujan tropis</label>
+                    <label><input type="radio" name="q5" value="B"> B. Ekosistem lumut</label>
+                    <label><input type="radio" name="q5" value="C"> C. Hutan berdaun jarum</label>
+                    <label><input type="radio" name="q5" value="D"> D. Pantai</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Komponen ekosistem yang terdiri dari makhluk hidup seperti manusia, hewan, dan tumbuhan disebut...</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A"> A. Abiotik</label>
+                    <label><input type="radio" name="q6" value="B"> B. Fisik</label>
+                    <label><input type="radio" name="q6" value="C"> C. Biotik</label>
+                    <label><input type="radio" name="q6" value="D"> D. Kimia</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Tumbuhan hijau dikategorikan sebagai produsen karena kemampuannya untuk...</p>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="A"> A. Memakan makhluk hidup lain</label>
+                    <label><input type="radio" name="q7" value="B"> B. Menguraikan zat sisa</label>
+                    <label><input type="radio" name="q7" value="C"> C. Membuat makanannya sendiri melalui fotosintesis</label>
+                    <label><input type="radio" name="q7" value="D"> D. Bertahan hidup tanpa air</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. Dalam rantai makanan, hewan herbivora yang memakan produsen secara langsung disebut sebagai...</p>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="A"> A. Konsumen primer</label>
+                    <label><input type="radio" name="q8" value="B"> B. Konsumen sekunder</label>
+                    <label><input type="radio" name="q8" value="C"> C. Konsumen tersier</label>
+                    <label><input type="radio" name="q8" value="D"> D. Pengurai</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. Organisme seperti jamur dan bakteri yang berfungsi menguraikan zat-zat dari makhluk hidup yang telah mati disebut...</p>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="A"> A. Produsen</label>
+                    <label><input type="radio" name="q9" value="B"> B. Konsumen</label>
+                    <label><input type="radio" name="q9" value="C"> C. Dekomposer (Pengurai)</label>
+                    <label><input type="radio" name="q9" value="D"> D. Abiotik</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>10. Karakteristik komponen biotik yang membedakannya dari komponen abiotik adalah...</p>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="A"> A. Bersifat stabil dan tidak berubah</label>
+                    <label><input type="radio" name="q10" value="B"> B. Tidak saling berinteraksi</label>
+                    <label><input type="radio" name="q10" value="C"> C. Dapat merespon lingkungan</label>
+                    <label><input type="radio" name="q10" value="D"> D. Tidak berasal dari organisme hidup</label>
+                </div>
+            </div>
+
+            <button type="button" onclick="hitungSkor()">Kumpulkan Jawaban</button>
+        </form>
+
+        <div id="hasil-evaluasi">
+            <h3 id="teks-nama-hasil"></h3>
+            <h1 style="font-size: 48px; color: #e65100; margin: 10px 0;" id="teks-skor">0</h1>
+            <p>Skor kamu telah otomatis tersimpan di sistem Guru!</p>
+        </div>
+        
+        <hr style="margin: 30px 0;">
+        <h3>Ingin tantangan tambahan?</h3>
+        <a href="https://wayground.com/admin/way-arena/create/63f4d297706420001ddcff0e" target="_blank" class="btn btn-quizizz">🎮 Mainkan Evaluasi Tambahan di Quizizz</a>
     </div>
 
+    <div class="card" style="border-top: 5px solid #ffeb3b;">
+        <h2>Bagaimana perasaan kalian setelah belajar hari ini?</h2>
+        <p>Pilih salah satu emoji dan berikan komentar kalian!</p>
+        
+        <div class="emoji-container">
+            <div>
+                <button class="emoji-btn" onclick="pilihEmoji('senang')">😄</button>
+                <p class="emoji-count">Senang: <span id="count-senang">0</span></p>
+            </div>
+            <div>
+                <button class="emoji-btn" onclick="pilihEmoji('gembira')">🤩</button>
+                <p class="emoji-count">Gembira: <span id="count-gembira">0</span></p>
+            </div>
+            <div>
+                <button class="emoji-btn" onclick="pilihEmoji('sedih')">😢</button>
+                <p class="emoji-count">Sedih: <span id="count-sedih">0</span></p>
+            </div>
+            <div>
+                <button class="emoji-btn" onclick="pilihEmoji('pusing')">😵</button>
+                <p class="emoji-count">Pusing: <span id="count-pusing">0</span></p>
+            </div>
+        </div>
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT LOGIKA KUIS & PENGIRIMAN DATA   -->
-    <!-- ========================================== -->
-    <script>
-        // --- 1. DEKLARASI VARIABEL UTAMA (GLOBAL) ---
-        let totalSkor = 0;
-        let correctAnswers = 0; // Jalankan fungsi hitung jawaban benarmu di sini
-        let totalSoal = 10;     // Sesuaikan dengan total jumlah soal kuis interaktifmu
-        let emojiTerpilihGlobal = "Belum memilih emoji"; //
+        <textarea id="komentar" placeholder="Tuliskan pesan, kesan, atau pertanyaan kalian di sini..."></textarea>
+        <br>
+        <button type="button" onclick="kirimFeedback()" style="margin-top: 10px;">Kirim Feedback</button>
+    </div>
 
-        // --- 2. FUNGSI HITUNG & CEK NILAI KUIS ---
-        function cekNilaiKuis() {
-            const nama = document.getElementById('nameInput').value.trim();
-            const kelas = document.getElementById('classInput').value.trim();
+</div>
 
-            if (!nama || !kelas) {
-                alert("Silakan isi Nama dan Kelas terlebih dahulu sebelum mengecek nilai!");
-                return;
-            }
+<script>
+    // KUNCI JAWABAN (Tersembunyi di dalam JavaScript)
+    const kunciJawaban = {
+        q1: 'C', q2: 'B', q3: 'C', q4: 'A', q5: 'B',
+        q6: 'C', q7: 'C', q8: 'A', q9: 'C', q10: 'C'
+    };
 
-            // [CONTOH LOGIKA HITUNG SKOR] - Sesuaikan dengan fungsi deteksi jawaban kuis aslimu
-            // Misalkan variabel correctAnswers dihitung dari jumlah radio button yang benar
-            correctAnswers = 3; // Contoh simulasi dapat benar 3 soal
-            totalSkor = (correctAnswers / totalSoal) * 100; //
+    function hitungSkor() {
+        const nama = document.getElementById('nama').value;
+        const kelas = document.getElementById('kelas').value;
 
-            // Tampilkan identitas siswa ke dalam panel hasil kuis bawah
-            document.getElementById('outName').innerText = nama; //
-            document.getElementById('outClass').innerText = kelas; //
-            document.getElementById('scoreText').innerText = totalSkor + " / 100"; //
-
-            // Tampilkan pesan teks motivasi yang adaptif sesuai nilai capaian siswa
-            let motivasi = ""; //
-            if (totalSkor >= 80) { //
-                motivasi = "Luar biasa! Kamu memahami seluruh konsep materi dengan sempurna! Pertahankan prestasimu ya! 🌟"; //
-            } else if (totalSkor >= 60) { //
-                motivasi = "Bagus! Kamu sudah menguasai materi ini dengan cukup baik. Sukses selalu! 👍"; //
-            } else { //
-                motivasi = "Jangan berkecil hati ya. Ayo ulas kembali lembar modul dan coba kerjakan kuisnya lagi! 📚"; //
-            } //
-            document.getElementById('motivationalText').innerText = motivasi; //
-
-            // Buka dan tampilkan panel kotak hasil ujian
-            const panelHasil = document.getElementById('panelHasil');
-            panelHasil.style.display = 'block';
-
-            // --- 3. PEMBUATAN AREA REFLEKSI & TOMBOL KIRIM DATA SECARA DINAMIS ---
-            if (!document.getElementById('textRefleksi')) { //
-                const kotakKomentar = document.createElement('div'); //
-                kotakKomentar.innerHTML = `
-                    <div style="margin-top: 25px; text-align: center; font-family: sans-serif; border-top: 1px dashed #ccc; padding-top: 20px;">
-                        <label for="textRefleksi" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">
-                            Tuliskan kalimat refleksimu atau kendala belajar di sini:
-                        </label>
-                        <textarea id="textRefleksi" rows="4" style="width: 85%; max-width: 500px; padding: 12px; border-radius: 8px; border: 2px solid #bce2ca; outline: none; font-size: 14px;" placeholder="Ceritakan apa yang kamu rasakan setelah petualangan belajar ini..."></textarea>
-                        <br>
-                        <button id="btnKirimData" style="margin-top: 15px; background-color: #28a745; color: white; border: none; padding: 10px 25px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;">
-                             Kirim Hasil Nilai & Komentar Refleksi
-                        </button>
-                    </div>
-                `; //
-                
-                // Masukkan elemen ke HTML halaman terlebih dahulu agar bisa dibaca browser
-                panelHasil.appendChild(kotakKomentar); 
-
-                // Daftarkan fungsi klik kirim spreadsheet terpadu pada tombol baru tersebut
-                document.getElementById('btnKirimData').addEventListener('click', function() { //
-                    
-                    // Kumpulkan objek paket data kuis secara real-time langsung dari layar input
-                    const dataKuis = { //
-                        nama: document.getElementById('nameInput') ? document.getElementById('nameInput').value : "Anonim", //
-                        kelas: document.getElementById('classInput') ? document.getElementById('classInput').value : "-", //
-                        nilai: typeof totalSkor !== 'undefined' ? totalSkor : 0, //
-                        emoji: typeof emojiTerpilihGlobal !== 'undefined' ? emojiTerpilihGlobal : "Belum memilih emoji", //
-                        komentar_refleksi: document.getElementById('textRefleksi') ? document.getElementById('textRefleksi').value : "Tidak menulis refleksi" //
-                    }; //
-
-                    // Link Web App URL Jembatan Google Apps Script milikmu
-                    const urlJembatan = "https://script.google.com/macros/s/AKfycbyQ_aIWZgnVj7fkLZ1yHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekwQ/exec"; //
-
-                    // Visual status loading pengiriman data
-                    document.getElementById('btnKirimData').innerText = "Sedang Mengirim..."; //
-                    document.getElementById('btnKirimData').disabled = true; //
-
-                    // Eksekusi pengiriman data menuju Google Sheets
-                    fetch(urlJembatan, { //
-                        method: "POST", //
-                        body: JSON.stringify(dataKuis) //
-                    }) //
-                    .then(response => response.json()) //
-                    .then(result => { //
-                        if(result.status === "success") { //
-                            alert("Terima kasih! Data nilai, emoji, dan kalimat refleksimu BERHASIL disimpan ke Google Sheets Guru!"); //
-                            document.getElementById('btnKirimData').innerText = "✅ Data Berhasil Terkirim!"; //
-                            document.getElementById('btnKirimData').style.backgroundColor = "#6c757d"; //
-                        } //
-                    }) //
-                    .catch(error => { //
-                        console.error("Error:", error); //
-                        alert("Gagal mengirim data, silakan klik kirim ulang."); //
-                        document.getElementById('btnKirimData').innerText = "Kirim Hasil Nilai & Komentar Refleksi"; //
-                        document.getElementById('btnKirimData').disabled = false; //
-                    }); //
-                }); //
-            }
-
-            // Otomatis gulir layar fokus mengarah ke panel hasil evaluasi bawah
-            document.getElementById('panelHasil').scrollIntoView({ behavior: 'smooth' });
+        if(!nama || !kelas) {
+            alert("Harap isi Nama dan Kelas terlebih dahulu!");
+            return;
         }
 
-        // --- 4. FUNGSI PEMILIHAN EMOJI REFLEKSI ---
-        function addFeedback(emojiType) { //
-            // Memperbarui angka indikator badge di bawah emoji pada halaman kreasimu
-            const badge = document.getElementById(`fb-${emojiType}`); //
-            if (badge) {
-                let currentCount = parseInt(badge.innerText) || 0; //
-                badge.innerText = currentCount + 1; //
+        let skor = 0;
+        let dijawabSemua = true;
+
+        for (let i = 1; i <= 10; i++) {
+            const jawabanSiswa = document.querySelector(`input[name="q${i}"]:checked`);
+            if (jawabanSiswa) {
+                if (jawabanSiswa.value === kunciJawaban[`q${i}`]) {
+                    skor += 10; // Setiap soal bernilai 10
+                }
+            } else {
+                dijawabSemua = false;
             }
+        }
 
-            // REKAM JENIS EMOJI YANG DIKLIK SISWA KE VARIABEL GLOBAL AGAR BISA TERKIRIM
-            emojiTerpilihGlobal = emojiType; //
+        if(!dijawabSemua) {
+            alert("Harap jawab semua soal sebelum mengumpulkan!");
+            return;
+        }
 
-            // Berikan konfirmasi interaktif kepada siswa
-            alert(`Terima kasih! Refleksi perasaan [${emojiType.toUpperCase()}] kamu berhasil terekam.`); //
-        } //
-    </script>
+        // Tampilkan hasil di layar
+        document.getElementById('quizForm').style.display = 'none';
+        document.getElementById('hasil-evaluasi').style.display = 'block';
+        document.getElementById('teks-nama-hasil').innerText = `Hebat, ${nama} (${kelas})! Skor kamu adalah:`;
+        document.getElementById('teks-skor').innerText = skor;
+
+        /* 
+        Catatan untuk Pak Yoga: 
+        Agar nilai ini sungguhan masuk ke Google Sheet (https://docs.google.com/spreadsheets/d/1MTxZU0il7oHddhV8m-AK4YPibgotE199nJNThJ3q1l8/edit), 
+        Bapak perlu menggunakan "Google Apps Script" sebagai jembatan (API).
+        Kode di bawah ini adalah simulasi pengiriman data.
+        */
+        console.log(`Data terkirim ke spreadsheet: Nama=${nama}, Kelas=${kelas}, Skor=${skor}`);
+    }
+
+    // Variabel untuk menyimpan hitungan emoji secara lokal di halaman
+    let countSenang = 0;
+    let countGembira = 0;
+    let countSedih = 0;
+    let countPusing = 0;
+    let emojiDipilih = '';
+
+    function pilihEmoji(jenis) {
+        emojiDipilih = jenis;
+        alert(`Kamu merasa ${jenis} hari ini! Jangan lupa tulis komentarmu lalu klik 'Kirim Feedback' ya.`);
+    }
+
+    function kirimFeedback() {
+        const komentar = document.getElementById('komentar').value;
+        if(!emojiDipilih) {
+            alert("Silakan klik salah satu emoji perasaanmu terlebih dahulu!");
+            return;
+        }
+
+        // Menambah angka pada emoji yang dipilih
+        if(emojiDipilih === 'senang') { countSenang++; document.getElementById('count-senang').innerText = countSenang; }
+        if(emojiDipilih === 'gembira') { countGembira++; document.getElementById('count-gembira').innerText = countGembira; }
+        if(emojiDipilih === 'sedih') { countSedih++; document.getElementById('count-sedih').innerText = countSedih; }
+        if(emojiDipilih === 'pusing') { countPusing++; document.getElementById('count-pusing').innerText = countPusing; }
+
+        alert("Terima kasih atas feedback yang kamu berikan! Data telah terkirim ke Pak Yoga.");
+        document.getElementById('komentar').value = '';
+        emojiDipilih = ''; // reset
+    }
+</script>
+
 </body>
 </html>
