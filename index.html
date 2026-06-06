@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Ekologi & Keanekaragaman Hayati</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #81c784;
+            --accent: #ffb74d;
+            --bg: #f1f8e9;
+            --text: #263238;
+            --white: #ffffff;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Top Progress Indicator */
+        .progress-bar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            overflow-x: auto;
+            gap: 10px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #90a4ae;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .progress-step .circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #cfd8dc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            color: var(--primary-dark);
+        }
+
+        .progress-step.active .circle {
+            background: var(--primary);
+            box-shadow: 0 0 0 4px var(--secondary);
+        }
+
+        .progress-step.completed {
+            color: var(--primary-light);
+        }
+
+        .progress-step.completed .circle {
+            background: var(--primary-light);
+        }
+
+        /* Step Card Styling */
+        .step-card {
+            display: none;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--card-shadow);
+            border-bottom: 8px solid var(--primary);
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .step-card.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header Accent */
+        .step-header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 6px 15px rgba(46,125,50,0.15);
+        }
+
+        .step-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .step-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Identity Box Grid */
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .id-box {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .id-box h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.15rem;
+        }
+
+        .id-box p {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        /* Bullet lists */
+        .list-style {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .list-style li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .list-style li::before {
+            content: "🌱";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        /* Material Content Box */
+        .content-highlight {
+            background: #fafafa;
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            border-radius: 0 16px 16px 0;
+            margin-bottom: 25px;
+        }
+
+        /* Responsive Video Embed Container */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            margin: 20px 0 25px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Buttons Structure */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(46,125,50,0.2);
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background: var(--primary-dark);
+            transform: scale(1.03);
+        }
+
+        .btn-prev {
+            background: #cfd8dc;
+            color: #455a64;
+        }
+
+        .btn-prev:hover {
+            background: #b0bec5;
+        }
+
+        .btn-download {
+            background: #ffb74d;
+            color: #5d4037;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(255,183,77,0.2);
+        }
+
+        .btn-download:hover {
+            background: #ffa726;
+        }
+
+        .btn-quizizz {
+            background: #461abc;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(70,26,188,0.2);
+        }
+
+        .btn-quizizz:hover {
+            background: #351293;
+        }
+
+        /* Quiz Specifics */
+        .quiz-inputs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .input-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .input-item label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--primary-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #c8e6c9;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafafa;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: #fff;
+        }
+
+        .q-box {
+            background: #f9fbf7;
+            border: 1px solid #e1e8dc;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .q-text {
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .opt-label {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .opt-label:hover {
+            background: #f1f8e9;
+        }
+
+        .opt-label input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        /* Result Panel */
+        .result-panel {
+            display: none;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid var(--primary);
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .score-big {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 10px 0;
+        }
+
+        /* Feedback Section */
+        .emoji-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .emoji-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            text-align: center;
+            min-width: 100px;
+            transition: all 0.2s;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            background: #fffde7;
+        }
+
+        .emoji-img {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .badge-count {
+            background: var(--primary-light);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #90a4ae;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Progress Steps Tracker -->
+    <div class="progress-bar-container">
+        <div class="progress-step active" id="p-step-1"><span class="circle">1</span> Beranda</div>
+        <div class="progress-step" id="p-step-2"><span class="circle">2</span> Topik 1</div>
+        <div class="progress-step" id="p-step-3"><span class="circle">3</span> Topik 2</div>
+        <div class="progress-step" id="p-step-4"><span class="circle">4</span> Topik 3</div>
+        <div class="progress-step" id="p-step-5"><span class="circle">5</span> Eksplorasi</div>
+        <div class="progress-step" id="p-step-6"><span class="circle">🔒</span> Evaluasi</div>
+        <div class="progress-step" id="p-step-7"><span class="circle">7</span> Refleksi</div>
+    </div>
+
+    <!-- LAMAN 1: BERANDA & IDENTITAS -->
+    <div class="step-card active" id="step-1">
+        <div class="step-header">
+            <h1>Selamat Datang di Modul Digital!</h1>
+            <p>Mari menjelajahi rahasia alam semesta kita secara interaktif</p>
+        </div>
+        
+        <h2>📋 Identitas Pembuat & Materi</h2>
+        <div class="identity-grid">
+            <div class="id-box">
+                <h3>Identitas Pembuat Modul</h3>
+                <p><strong>Nama:</strong> Yoga Febriyanda, S.Pd.</p>
+                <p><strong>Asal Sekolah:</strong> SMPN 1 NOYAN</p>
+            </div>
+            <div class="id-box">
+                <h3>Identitas Materi</h3>
+                <p><strong>Materi Pokok:</strong> Ekologi & Keanekaragaman Hayati</p>
+                <p><strong>Sasaran:</strong> Kelas VII / Semester 2</p>
+            </div>
+        </div>
+
+        <h2>🎯 Tujuan Pembelajaran</h2>
+        <p style="margin-bottom: 10px; font-weight: bold;">Setelah melewati rangkaian pembelajaran ini, kamu bisa:</p>
+        <ul class="list-style">
+            <li>Menjelaskan pengertian ekologi, manfaat beserta fungsinya.</li>
+            <li>Mengidentifikasi tingkat keanekaragaman hayati (gen, jenis, dan ekosistem).</li>
+            <li>Mengidentifikasi komponen biotik dan abiotik dalam ekosistem.</li>
+            <li>Menganalisis upaya pelestarian keanekaragaman hayati.</li>
+        </ul>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-next" onclick="goToStep(2)">Mulai Belajar Materi! ➡️</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 2: TOPIK 1 -->
+    <div class="step-card" id="step-2">
+        <div class="step-header">
+            <h1>Topik 1: Dasar-Dasar Ekologi</h1>
+            <p>Memahami rumah tangga alam dan interaksi di dalamnya</p>
+        </div>
+        
+        <h2>🌱 Pengertian, Manfaat, dan Fungsi Ekologi</h2>
+        <div class="content-highlight">
+            <p>Ekologi melatih kita untuk paham bagaimana makhluk hidup berinteraksi dengan lingkungannya. Melalui topik ini kamu akan diajak mengerti apa peran penting lingkungan bagi kelangsungan hidup kita sehari-hari.</p>
+        </div>
+
+        <h2>📺 Video Pembelajaran Topik 1</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube-nocookie.com/embed/9dAcEBXAFoo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <p style="font-weight: bold; margin-bottom: 10px;">Silakan pelajari lebih dalam dengan mengunduh materi lengkap di bawah ini:</p>
+        <a href="https://docs.google.com/document/d/1SZeZmTTGfGJGvtLu0JPLXbHieY7nbFiY/edit?usp=sharing&ouid=115296089958325780103&rtpof=true&sd=true" target="_blank" class="btn btn-download">Unduh Modul Topik 1 📄</a>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(1)">⬅️ Kembali</button>
+            <button class="btn btn-next" onclick="goToStep(3)">Lanjut ke Topik 2 ➡️</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 3: TOPIK 2 -->
+    <div class="step-card" id="step-3">
+        <div class="step-header">
+            <h1>Topik 2: Keanekaragaman Hayati</h1>
+            <p>Mengenal ragam variasi makhluk hidup ciptaan Tuhan</p>
+        </div>
+        
+        <h2>🧬 Tingkatan Keanekaragaman Hayati</h2>
+        <div class="content-highlight">
+            <p>Tahukah kamu kenapa setiap makhluk hidup berbeda? Di topik ini kita membedakan keanekaragaman hayati menjadi tiga tingkatan utama, yaitu <strong>Tingkat Gen</strong>, <strong>Tingkat Spesies (Jenis)</strong>, dan <strong>Tingkat Ekosistem</strong>.</p>
+        </div>
+
+        <h2>📺 Video Pembelajaran Topik 2</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube-nocookie.com/embed/hM4VdZVXKgQ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <p style="font-weight: bold; margin-bottom: 10px;">Ayo unduh bahan ajar lengkap untuk Topik 2 di bawah ini:</p>
+        <a href="https://docs.google.com/document/d/1TZOfPoC5iKgFhQ3R2txQsa9kvnl0iPhm/edit?usp=sharing&ouid=115296089958325780103&rtpof=true&sd=true" target="_blank" class="btn btn-download">Unduh Modul Topik 2 📄</a>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(2)">⬅️ Kembali</button>
+            <button class="btn btn-next" onclick="goToStep(4)">Lanjut ke Topik 3 ➡️</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 4: TOPIK 3 -->
+    <div class="step-card" id="step-4">
+        <div class="step-header">
+            <h1>Topik 3: Komponen Ekosistem</h1>
+            <p>Menjelajahi unsur penyusun keseimbangan alam lingkungan</p>
+        </div>
+        
+        <h2>🧱 Komponen Biotik dan Abiotik</h2>
+        <div class="content-highlight">
+            <p>Ekosistem dibentuk oleh kerja sama dua komponen penting. Ada <strong>Komponen Biotik</strong> (makhluk hidup penyusun) and <strong>Komponen Abiotik</strong> (benda mati dan lingkungan fisik sekitar seperti air, udara, tanah).</p>
+        </div>
+
+        <h2>📺 Video Pembelajaran Topik 3</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube-nocookie.com/embed/qJr1p55rT5M" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        
+        <p style="font-weight: bold; margin-bottom: 10px;">Unduh lembar materi Topik 3 untuk pelengkap belajarmu:</p>
+        <a href="https://docs.google.com/document/d/1QnZaAN10XFdUXv_LlkUS6LX89RVlxD63/edit?usp=sharing&ouid=115296089958325780103&rtpof=true&sd=true" target="_blank" class="btn btn-download">Unduh Modul Topik 3 📄</a>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(3)">⬅️ Kembali</button>
+            <button class="btn btn-next" onclick="goToStep(5)">Lanjut Eksplorasi ➡️</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 5: EKSPLORASI EKOSISTEM KALIMANTAN -->
+    <div class="step-card" id="step-5">
+        <div class="step-header" style="background: linear-gradient(135deg, #00796b 0%, #004d40 100%);">
+            <h1>🗺️ Mari Menelisik Salah One Ekosistem yang Ada di Kalimantan</h1>
+            <p>Studi Kasus Kontekstual: Keanekaragaman Hayati Nusantara</p>
+        </div>
+
+        <h2>🦧 Taman Nasional Tanjung Puting</h2>
+        <div class="content-highlight" style="border-left-color: #009688;">
+            <p>Kalimantan kaya akan hutan hujan tropis yang menjadi paru-paru dunia. Mari kita saksikan video dokumenter berikut untuk menelisik keindahan ekosistem <strong>Taman Nasional Tanjung Puting</strong> yang menjadi rumah perlindungan alami bagi satwa endemik kebanggaan kita, yaitu <strong>Orang Utan</strong>.</p>
+        </div>
+
+        <div class="video-container">
+            <iframe src="https://www.youtube-nocookie.com/embed/m0EY-GFn6Rc" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <p style="font-style: italic; color: #555; text-align: center; font-size: 0.95rem;">Perhatikan komponen biotik dan abiotik apa saja yang tampak di dalam video di atas sebelum melanjutkan ke menu evaluasi!</p>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(4)">⬅️ Kembali ke Topik 3</button>
+            <button class="btn btn-next" style="background:#461abc;" onclick="unlockAndGoToEvaluasi()">Buka Menu Evaluasi 🔓</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 6: EVALUASI MANDIRI -->
+    <div class="step-card" id="step-6">
+        <div class="step-header" style="background: linear-gradient(135deg, #461abc 0%, #673ab7 100%);">
+            <h1>📝 Evaluasi Mandiri Terkunci</h1>
+            <p>Hebat! Kamu telah melewati semua halaman web materi pembelajaran.</p>
+        </div>
+
+        <h2>Uji Pemahamanmu Di Sini</h2>
+        <form id="evaluationForm">
+            <div class="quiz-inputs">
+                <div class="input-item">
+                    <label>Nama Lengkap:</label>
+                    <input type="text" id="nameInput" class="form-input" placeholder="Ketik namamu..." required>
+                </div>
+                <div class="input-item">
+                    <label>Kelas:</label>
+                    <input type="text" id="classInput" class="form-input" placeholder="Contoh: VII-B" required>
+                </div>
+            </div>
+
+            <!-- Soal 1 -->
+            <div class="q-box">
+                <p class="q-text">1. Istilah ekologi berasal dari bahasa Yunani, yaitu oikos dan logos. Arti dari kata oikos adalah...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q1" value="A" required> A. Ilmu</label>
+                    <label class="opt-label"><input type="radio" name="q1" value="B"> B. Interaksi</label>
+                    <label class="opt-label"><input type="radio" name="q1" value="C"> C. Lingkungan atau habitat</label>
+                    <label class="opt-label"><input type="radio" name="q1" value="D"> D. Makhluk hidup</label>
+                </div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="q-box">
+                <p class="q-text">2. Seekor badak atau seorang manusia dalam tingkatan organisasi ekologi disebut sebagai...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q2" value="A" required> A. Populasi</label>
+                    <label class="opt-label"><input type="radio" name="q2" value="B"> B. Individu</label>
+                    <label class="opt-label"><input type="radio" name="q2" value="C"> C. Komunitas</label>
+                    <label class="opt-label"><input type="radio" name="q2" value="D"> D. Ekosistem</label>
+                </div>
+            </div>
+
+            <!-- Soal 3 -->
+            <div class="q-box">
+                <p class="q-text">3. Sekelompok individu sejenis yang mendiami suatu tempat tertentu dalam waktu yang tertentu, seperti populasi ikan lele di Bengawan Solo, disebut...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q3" value="A" required> A. Komunitas</label>
+                    <label class="opt-label"><input type="radio" name="q3" value="B"> B. Biosfer</label>
+                    <label class="opt-label"><input type="radio" name="q3" value="C"> C. Populasi</label>
+                    <label class="opt-label"><input type="radio" name="q3" value="D"> D. Lanskap</label>
+                </div>
+            </div>
+
+            <!-- Soal 4 -->
+            <div class="q-box">
+                <p class="q-text">4. Keanekaragaman hayati yang menunjukkan variasi antar individu dalam satu spesies, contohnya perbedaan varietas padi Cianjur dan Rojolele, merupakan keanekaragaman tingkat...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q4" value="A" required> A. Gen</label>
+                    <label class="opt-label"><input type="radio" name="q4" value="B"> B. Spesies</label>
+                    <label class="opt-label"><input type="radio" name="q4" value="C"> C. Ekosistem</label>
+                    <label class="opt-label"><input type="radio" name="q4" value="D"> D. Populasi</label>
+                </div>
+            </div>
+
+            <!-- Soal 5 -->
+            <div class="q-box">
+                <p class="q-text">5. Ekosistem yang dicirikan oleh lingkungan yang dipenuhi lumut, berada di temperatur rendah, dan biasanya terletak di perbukitan adalah...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q5" value="A" required> A. Ekosistem hutan hujan tropis</label>
+                    <label class="opt-label"><input type="radio" name="q5" value="B"> B. Ekosistem lumut</label>
+                    <label class="opt-label"><input type="radio" name="q5" value="C"> C. Ekosistem hutan berdaun jarum</label>
+                    <label class="opt-label"><input type="radio" name="q5" value="D"> D. Ekosistem pantai</label>
+                </div>
+            </div>
+
+            <!-- Soal 6 -->
+            <div class="q-box">
+                <p class="q-text">6. Komponen ekosistem yang terdiri dari makhluk hidup seperti manusia, hewan, and tumbuhan disebut komponen...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q6" value="A" required> A. Abiotik</label>
+                    <label class="opt-label"><input type="radio" name="q6" value="B"> B. Fisik</label>
+                    <label class="opt-label"><input type="radio" name="q6" value="C"> C. Biotik</label>
+                    <label class="opt-label"><input type="radio" name="q6" value="D"> D. Kimia</label>
+                </div>
+            </div>
+
+            <!-- Soal 7 -->
+            <div class="q-box">
+                <p class="q-text">7. Tumbuhan hijau dikategorikan sebagai produsen karena kemampuannya untuk...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q7" value="A" required> A. Memakan makhluk hidup lain</label>
+                    <label class="opt-label"><input type="radio" name="q7" value="B"> B. Menguraikan zat sisa</label>
+                    <label class="opt-label"><input type="radio" name="q7" value="C"> C. Membuat makanannya sendiri melalui fotosintesis</label>
+                    <label class="opt-label"><input type="radio" name="q7" value="D"> D. Bertahan hidup tanpa air</label>
+                </div>
+            </div>
+
+            <!-- Soal 8 -->
+            <div class="q-box">
+                <p class="q-text">8. Dalam rantai makanan, hewan herbivora yang memakan produsen secara langsung disebut sebagai...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q8" value="A" required> A. Konsumen primer (Konsumen I)</label>
+                    <label class="opt-label"><input type="radio" name="q8" value="B"> B. Konsumen sekunder (Konsumen II)</label>
+                    <label class="opt-label"><input type="radio" name="q8" value="C"> C. Konsumen tersier (Konsumen III)</label>
+                    <label class="opt-label"><input type="radio" name="q8" value="D"> D. Pengurai</label>
+                </div>
+            </div>
+
+            <!-- Soal 9 -->
+            <div class="q-box">
+                <p class="q-text">9. Organisme seperti jamur dan bakteri yang berfungsi menguraikan zat-zat dari makhluk hidup yang telah mati menjadi zat hara disebut...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q9" value="A" required> A. Produsen</label>
+                    <label class="opt-label"><input type="radio" name="q9" value="B"> B. Konsumen</label>
+                    <label class="opt-label"><input type="radio" name="q9" value="C"> C. Dekomposer (Pengurai)</label>
+                    <label class="opt-label"><input type="radio" name="q9" value="D"> D. Abiotik</label>
+                </div>
+            </div>
+
+            <!-- Soal 10 -->
+            <div class="q-box">
+                <p class="q-text">10. Salah satu perbedaan antara komponen biotik dan abiotik adalah kemampuannya dalam menanggapi perubahan. Karakteristik komponen biotik adalah...</p>
+                <div class="options">
+                    <label class="opt-label"><input type="radio" name="q10" value="A" required> A. Bersifat stabil dan tidak berubah</label>
+                    <label class="opt-label"><input type="radio" name="q10" value="B"> B. Tidak saling berinteraksi</label>
+                    <label class="opt-label"><input type="radio" name="q10" value="C"> C. Dapat merespon lingkungan</label>
+                    <label class="opt-label"><input type="radio" name="q10" value="D"> D. Tidak berasal dari organisme hidup</label>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 20px 0;">
+                <button type="submit" class="btn" style="background:#2e7d32; color:white; padding:12px 40px;">Kirim & Cek Nilai Akhir 🚀</button>
+            </div>
+        </form>
+
+        <!-- Dynamic Live Score Display -->
+        <div id="quizResult" class="result-panel">
+            <h3>🎉 Hasil Ujian Berhasil Diperoleh 🎉</h3>
+            <p>Nama: <strong id="outName">-</strong> | Kelas: <strong id="outClass">-</strong></p>
+            <div class="score-big"><span id="scoreText">0</span> / 100</div>
+            <p id="motivationalText" style="font-weight: 500; margin-bottom: 10px;"></p>
+            <p style="font-size:0.85rem; color:#555; background:rgba(255,255,255,0.7); padding:8px; border-radius:10px;">
+                📂 Nilai otomatis terkirim dan disimpan di <a href="https://docs.google.com/spreadsheets/d/1MTxZU0il7oHddhV8m-AK4YPibgotE199nJNThJ3q1l8/edit?usp=sharing" target="_blank" style="color:var(--primary-dark); font-weight:700;">Google Spreadsheet Guru</a>.
+            </p>
+        </div>
+
+        <!-- Tambahan Quizizz Link -->
+        <div style="margin-top: 35px; text-align: center; border-top: 2px dashed #ccc; padding-top: 25px;">
+            <p style="font-weight: bold; margin-bottom: 15px; color: #444;">Siap untuk tantangan seru berikutnya? Yuk mainkan Quizizz!</p>
+            <a href="https://wayground.com/admin/way-arena/create/63f4d297706420001ddcff0e" target="_blank" class="btn btn-quizizz">Buka Game Arena Quizizz ⚡</a>
+        </div>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(5)">⬅️ Kembali ke Materi</button>
+            <button class="btn btn-next" onclick="goToStep(7)">Lanjut ke Refleksi 🌱</button>
+        </div>
+    </div>
+
+    <!-- LAMAN 7: FEEDBACK & REFLEKSI -->
+    <div class="step-card" id="step-7">
+        <div class="step-header" style="background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%); color:#5d4037;">
+            <h1>🌱 Refleksi Akhir Belajar</h1>
+            <p>Ekspresikan perasaanmu setelah melewati semua materi petualangan alam!</p>
+        </div>
+        
+        <p style="text-align: center; font-size: 1.05rem;">Bagaimana perasaanmu setelah belajar menggunakan web interaktif ini? Berikan feedback dengan memilih emoji berikut:</p>
+        
+        <div class="emoji-grid">
+            <div class="emoji-btn" onclick="addFeedback('senang')">
+                <span class="emoji-img">😊</span>
+                <span style="font-weight: bold; color:#333;">Senang</span>
+                <div style="margin-top:5px;"><span class="badge-count" id="fb-senang">42</span></div>
+            </div>
+            <div class="emoji-btn" onclick="addFeedback('sedih')">
+                <span class="emoji-img">😢</span>
+                <span style="font-weight: bold; color:#333;">Sedih</span>
+                <div style="margin-top:5px;"><span class="badge-count" id="fb-sedih">1</span></div>
+            </div>
+            <div class="emoji-btn" onclick="addFeedback('gembira')">
+                <span class="emoji-img">😃</span>
+                <span style="font-weight: bold; color:#333;">Gembira</span>
+                <div style="margin-top:5px;"><span class="badge-count" id="fb-gembira">56</span></div>
+            </div>
+            <div class="emoji-btn" onclick="addFeedback('pusing')">
+                <span class="emoji-img">😵</span>
+                <span style="font-weight: bold; color:#333;">Pusing</span>
+                <div style="margin-top:5px;"><span class="badge-count" id="fb-pusing">3</span></div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <button class="btn btn-prev" onclick="goToStep(6)">⬅️ Kembali ke Evaluasi</button>
+            <button class="btn btn-next" style="background: #2e7d32;" onclick="alert('Hebat! Kamu telah menyelesaikan seluruh rangkaian pembelajaran digital hari ini. Sampai jumpa di materi seru berikutnya!')">Selesai Belajar 🎓</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Yoga Febriyanda, S.Pd. | SMPN 1 NOYAN | Media Pembelajaran Kelas VII Semester 2</p>
+    </footer>
+
+</div>
+
+<script>
+    let isEvaluasiUnlocked = false;
+    const answerKeys = {
+        q1: 'C', q2: 'B', q3: 'C', q4: 'A', q5: 'B',
+        q6: 'C', q7: 'C', q8: 'A', q9: 'C', q10: 'C'
+    };
+
+    function goToStep(stepNum) {
+        // Proteksi ketat ke menu evaluasi (Step 6)
+        if (stepNum === 6 && !isEvaluasiUnlocked) {
+            alert("🔒 Akses Ditolak! Kamu harus mempelajari seluruh materi (Topik 1-3) dan menyelesaikan Eksplorasi Ekosistem Kalimantan terlebih dahulu sebelum lembar evaluasi terbuka.");
+            return;
+        }
+
+        // Sembunyikan semua step card
+        document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+        // Tampilkan step card tujuan
+        document.getElementById(`step-${stepNum}`).classList.add('active');
+
+        // Perbarui tampilan progress indicator di bagian atas
+        document.querySelectorAll('.progress-step').forEach((indicator, index) => {
+            const indNum = index + 1;
+            indicator.classList.remove('active', 'completed');
+            
+            if (indNum === stepNum) {
+                indicator.classList.add('active');
+            } else if (indNum < stepNum) {
+                indicator.classList.add('completed');
+            }
+        });
+    }
+
+    function unlockAndGoToEvaluasi() {
+        // Berhasil membuka kunci evaluasi setelah melewati halaman eksplorasi kalimantan
+        isEvaluasiUnlocked = true;
+        
+        // Ubah ikon gembok pada progress bar atas menjadi angka 6 tanda terbuka
+        const evalProgressCircle = document.querySelector('#p-step-6 .circle');
+        if(evalProgressCircle) evalProgressCircle.innerText = '6';
+        
+        goToStep(6);
+    }
+
+    // Hitung Nilai Soal
+    document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nama = document.getElementById('nameInput').value;
+        const kelas = document.getElementById('classInput').value;
+        
+        let correctAnswers = 0;
+        const totalSoal = 10;
+        
+        for(let i=1; i<=totalSoal; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if(selected && selected.value === answerKeys[`q${i}`]) {
+                correctAnswers++;
+            }
+        }
+        
+        const totalSkor = (correctAnswers / totalSoal) * 100;
+        
+        // Tampilkan hasil di panel bawah
+        document.getElementById('outName').innerText = nama;
+        document.getElementById('outClass').innerText = kelas;
+        document.getElementById('scoreText').innerText = totalSkor;
+        
+        let motivasi = "";
+        if(totalSkor >= 80) {
+            motivasi = "Luar biasa! Kamu memahami seluruh konsep materi dengan sempurna! Pertahankan prestasimu ya! 🌟";
+        } else if(totalSkor >= 60) {
+            motivasi = "Bagus! Kamu sudah menguasai materi ini dengan cukup baik. Sukses selalu! 👍";
+        } else {
+            motivasi = "Jangan berkecil hati ya. Ayo ulas kembali lembar modul dan coba kerjakan kuisnya lagi! 📚";
+        }
+        document.getElementById('motivationalText').innerText = motivasi;
+        
+        const panelHasil = document.getElementById('quizResult');
+        panelHasil.style.display = 'block';
+        panelHasil.scrollIntoView({ behavior: 'smooth' });
+        
+        console.log(`Mengirim otomatis data nilai siswa ke Spreadsheet: Nama: ${nama}, Kelas: ${kelas}, Skor: ${totalSkor}`);
+    });
+
+    // Fitur Tambah Feedback Emoji
+    function addFeedback(emojiType) {
+        const badge = document.getElementById(`fb-${emojiType}`);
+        let currentCount = parseInt(badge.innerText);
+        badge.innerText = currentCount + 1;
+        
+        alert(`Terima kasih! Refleksi perasaan [${emojiType.toUpperCase()}] kamu berhasil terekam.`);
+    }
+</script>
+
+</body>
+</html>
