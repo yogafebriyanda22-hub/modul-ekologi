@@ -851,11 +851,14 @@
         
         const totalSkor = (correctAnswers / totalSoal) * 100;
         // Fungsi mengirim data ke Google Sheets
-  const urlJembatan = "https://script.google.com/macros/s/AKfycbwQ_aIWZgnVj7fkLZlyHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekWQ/exec"; 
+  const urlJembatan = "https://script.google.com/macros/s/AKfycbwQ_aIWZgnVj7fkLZlyHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekWQ/exec";
+  const komentarSiswa = document.getElementById('textRefleksi') ? document.getElementById('textRefleksi').value : "Tidak menulis refleksi";      
   const dataKuis = {
     nama: nama,
     kelas: kelas,
-    nilai: totalSkor
+    nilai: totalSkor,
+    emoji: emojiTerpilihGlobal,
+    komentar_refleksi: komentarSiswa,
   };
 
   fetch(urlJembatan, {
@@ -889,18 +892,34 @@
         const panelHasil = document.getElementById('quizResult');
         panelHasil.style.display = 'block';
         panelHasil.scrollIntoView({ behavior: 'smooth' });
-        
+        // Membuat kotak cerita refleksi otomatis muncul di bawah panel hasil kuis
+    if (!document.getElementById('textRefleksi')) {
+        const kotakKomentar = document.createElement('div');
+        kotakKomentar.innerHTML = `
+            <div style="margin-top: 25px; text-align: center; font-family: sans-serif;">
+                <label for="textRefleksi" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">
+                    Tuliskan kalimat refleksimu atau kendala belajar di sini:
+                </label>
+                <textarea id="textRefleksi" rows="4" style="width: 85%; max-width: 500px; padding: 12px; border-radius: 8px; border: 2px solid #bce2ca; outline: none; font-size: 14px;" placeholder="Ceritakan apa yang kamu rasakan setelah petualangan belajar ini..."></textarea>
+            </div>
+        `;
+        panelHasil.insertBefore(kotakKomentar, panelHasil.lastChild);
+    }
         console.log(`Mengirim otomatis data nilai siswa ke Spreadsheet: Nama: ${nama}, Kelas: ${kelas}, Skor: ${totalSkor}`);
     });
-
+let emojiTerpilihGlobal = "Belum memilih emoji";
     // Fitur Tambah Feedback Emoji
-    function addFeedback(emojiType) {
-        const badge = document.getElementById(`fb-${emojiType}`);
-        let currentCount = parseInt(badge.innerText);
-        badge.innerText = currentCount + 1;
-        
-        alert(`Terima kasih! Refleksi perasaan [${emojiType.toUpperCase()}] kamu berhasil terekam.`);
-    }
+    // Fitur Tambah Feedback Emoji
+function addFeedback(emojiType) {
+    const badge = document.getElementById(`fb-${emojiType}`);
+    let currentCount = parseInt(badge.innerText);
+    badge.innerText = currentCount + 1;
+    
+    // REKAM EMOJI KE VARIABEL GLOBAL
+    emojiTerpilihGlobal = emojiType;
+
+    alert(`Terima kasih! Refleksi perasaan [${emojiType.toUpperCase()}] kamu berhasil terekam.`);
+}
 </script>
 
 </body>
