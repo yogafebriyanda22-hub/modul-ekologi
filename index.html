@@ -893,13 +893,12 @@
             const komentarSiswa = document.getElementById('textRefleksi').value || "Tidak menulis refleksi";
             
             const dataKuis = {
-                nama: namaSiswa,
-                kelas: kelasSiswa,
-                nilai: totalSkor,
-                emoji: emojiTerpilihGlobal,
-                komentar_refleksi: komentarSiswa
-            };
-
+            nama: document.getElementById('nameInput') ? document.getElementById('nameInput').value : "Anonim",
+            kelas: document.getElementById('classInput') ? document.getElementById('classInput').value : "-",
+            nilai: typeof totalSkor !== 'undefined' ? totalSkor : 0,
+            emoji: typeof emojiTerpilihGlobal !== 'undefined' ? emojiTerpilihGlobal : "Belum memilih emoji",
+            komentar_refleksi: document.getElementById('textRefleksi') ? document.getElementById('textRefleksi').value : "Tidak menulis refleksi"
+        };
             const urlJembatan = "https://script.google.com/macros/s/AKfycbyQ_aIWZgnVj7fkLZ1yHLx82ZFGuZgNpqHFfBPcVNqJn4uD0gFBVTppp5o4c8SItmekwQ/exec";
 
             document.getElementById('btnKirimData').innerText = "Sedang Mengirim...";
